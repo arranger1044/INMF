@@ -1,0 +1,45 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1038\cocoasubrtf350
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww9000\viewh8400\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\ql\qnatural\pardirnatural
+
+\f0\fs24 \cf0 In questa directory metter\'f2 alcuni risultati ottenuti dagli esperimenti effettuati con i codici presenti.\
+Il nome associato ad ogni file spiegher\'e0 i valori delle variabili utilizzate per l'esperimento.\
+\
+\
+Ecco la notazione per le immagini:\
+\
+
+\fs30 NOME_SOGGETTI_PERCENTUALEPX_SOGLIATERMINAZIONE_ITERATE_DIFFPX_RANDOM
+\fs24 \
+\
+
+\b NOME
+\b0  indica la tipologia del file:\
+rec = immagine che rappresenta il database di immagini ricostruito a partire da W e H\
+inmf = immagine che rappresenta le basi (colonne di W) ottenute dall'algoritmo incrementale\
+\
+
+\b SOGGETTI
+\b0  indica il numero di immagini/campioni presi dal db ORL (al momento non viene fatto alcun campionamento ma vengono presi in ordine) poich\'e9 utilizzare tutti e 400 le immagini risulterebbe troppo dispendioso in termini di tempo\
+\
+
+\b PERCENTUALEPX
+\b0  indica la percentuale di pixel gi\'e0 rappresentati nella matrice W, superata la quale non \'e8 necessario aggiunger una nuova componente (colonna) alla matrice W.\
+\
+
+\b SOGLIATERMINAZIONE
+\b0  soglia per il criterio di terminazione del passo incrementale (al momento non ancora usata)\
+\
+
+\b ITERATE
+\b0  indica il numero di iterate massimo concesso al passo incrementale (al momento \'e8 questo il criterio di terminazione)\
+\
+
+\b DIFFPX
+\b0  \'e8 un intero che indica se due pixel sono da considerasi uguali ( \'e8 la soglia per la norma 1 fra i valori di luminosit\'e0 di scala di grigio di due pixel) nella creazione di una maschera che individui le parti gi\'e0 rappresentabili di una immagini\
+\
+
+\b RANDOM
+\b0  \'e8 un bollano ( 0 oppure 1) che indica se l'algoritmo aggiunge colonne a W generandole in maniera casuale (1) oppure utilizzando il residuo non rappresentato dell'immagine (0)}

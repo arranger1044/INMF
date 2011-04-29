@@ -10,7 +10,7 @@ imloadfunc = 'pgma_read';
 reducesize = 1; 
     
 % This is where the cbcl face images reside
-thepath = '../data/orl-faces/';
+thepath = './orl-faces/';
 
 % Step through each subject and each image
 fprintf('Reading in the images...\n');

@@ -1,4 +1,4 @@
-function [TR, TE] = orl_training_test_sets(perc)
+function [TR, TE] = orl_training_test_sets(perc, individual)
 % orldata - read face image data from orl database
 %
 
@@ -48,49 +48,71 @@ else
     TE = zeros(92*112, totImgs * (1 - perc));
 end
 
-i = 0;
-k = 0;
-for subj=1:ndir,
-    
-    dirname = [thepath 's' num2str(subj) '/'];
-    dirregex = [dirname '*.pgm'];
-    imgNames = dir(dirregex);
-    fprintf('i %d, subj %d, num %d', i, subj, numel(imgNames));
-    trNUM = ceil(numel(imgNames) * perc);
-    fprintf('TOT %d perc %f TRAINING %d\n', numel(imgNames), perc, trNUM);
-    perm = randperm(numel(imgNames));
-    j = 0;
-    for imag=1:numel(imgNames),
-        j = j + 1;
-        index = perm(j);
-        fname = [dirname num2str(index) '.pgm'];
+% if individual is true (1) then I will extract the test and training set
+% with regard to each subject
+if individual,
+    i = 0;
+    k = 0;
+    for subj=1:ndir,
 
-        switch imloadfunc,
-         case 'pgma_read',
-          I = pgma_read(fname);
-         otherwise,
-          I = imread(fname);
-        end
+        dirname = [thepath 's' num2str(subj) '/'];
+        dirregex = [dirname '*.pgm'];
+        imgNames = dir(dirregex);
+        fprintf('i %d, subj %d, num %d', i, subj, numel(imgNames));
+        trNUM = ceil(numel(imgNames) * perc);
+        fprintf('TOT %d perc %f TRAINING %d\n', numel(imgNames), perc, trNUM);
+        perm = randperm(numel(imgNames));
+        j = 0;
+        for imag=1:numel(imgNames),
+            j = j + 1;
+            index = perm(j);
+            fname = [dirname num2str(index) '.pgm'];
 
-        if reducesize,
-            if j <= trNUM,
-                i = i + 1;
-                TR(:,i) = reshape(imresize(I,0.5,'bilinear'),[46*56, 1]);
-            else
-                k = k + 1;
-                TE(:,k) = reshape(imresize(I,0.5,'bilinear'),[46*56, 1]);
+            switch imloadfunc,
+             case 'pgma_read',
+              I = pgma_read(fname);
+             otherwise,
+              I = imread(fname);
             end
-        else
-            if j <= trNUM,
-                i = i + 1;
-                TR(:,i) = reshape(I,[92*112, 1]);           
+
+            if reducesize,
+                if j <= trNUM,
+                    i = i + 1;
+                    TR(:,i) = reshape(imresize(I,0.5,'bilinear'),[46*56, 1]);
+                else
+                    k = k + 1;
+                    TE(:,k) = reshape(imresize(I,0.5,'bilinear'),[46*56, 1]);
+                end
             else
-                k = k + 1;
-                TE(:,k) = reshape(I,[92*112, 1]);
+                if j <= trNUM,
+                    i = i + 1;
+                    TR(:,i) = reshape(I,[92*112, 1]);           
+                else
+                    k = k + 1;
+                    TE(:,k) = reshape(I,[92*112, 1]);
+                end
             end
         end
+        fprintf('[%d/40]\n',subj);
     end
-    fprintf('[%d/40]\n',subj);
+
+else %random sampling
+    % I create a single matrix V from data
+    V = orldata;
+    samples = size(V,2);
+    perm = randperm(samples);
+    trNUM = ceil(samples * perc);
+    j = 0;
+    for i=1:samples,
+          if i <= trNUM,
+              TR(:,i) = V(:, perm(i));
+          else
+              j = j + 1;
+              TE(:,j) = V(:, perm(i));
+          end
+
+    end
+    
 end
 
 fprintf('\n');
@@ -111,5 +133,7 @@ TE = max(TE,1e-4);
 
 % % Finally, divide by 10000 to avoid too large values for nmfsc algorithm
 % V = V/10000;
+TR = TR/10000;
+TE = TE/10000;
 
 % Done!

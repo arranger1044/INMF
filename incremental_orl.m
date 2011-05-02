@@ -1,9 +1,21 @@
-function [W,H] = incremental_orl(V, thresh, epsilon, maxiter, pixel_diff, fname, rnd)
+function [W,H] = incremental_orl(V, thresh, epsilon, maxiter, pixel_diff, fname, rnd, init)
 samples = size(V,2);
 pixels = size(V,1);
 
 VE = [V(:,1)];
-W = [V(:,1)];
+
+% Checking if the first basis shall be random generated or the first sample
+% shall be used
+if strcmp(init, 'randInit'),
+    W = abs(randn(pixels, 1));
+    fprintf('random first base!\n');
+else if strcmp(init, 'firstSample'),
+    W = [V(:,1)];
+    fprintf('first sample as first base!\n');
+    end
+end
+
+
 H = 1;
 iter = 0;
 for i=2:samples,

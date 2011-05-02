@@ -56,7 +56,7 @@ while keepGoing,
     
     if iter >= maxiter || maxDIFF <= epsilon,
         keepGoing = 0;
-        fprintf('itersDone %d maxDIFF %f\n', iter, maxDIFF);
+        fprintf('itersDone %d maxDIFF %f', maxiter);
     end
 end
 
